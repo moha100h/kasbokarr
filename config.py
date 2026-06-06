@@ -1,11 +1,10 @@
 import os
-from dotenv import load_dotenv
-load_dotenv()
+from dataclasses import dataclass
 
-BOT_TOKEN = os.getenv("BOT_TOKEN", "")
-ADMIN_ID = int(os.getenv("ADMIN_ID", "0"))
-MAX_RESULTS = int(os.getenv("MAX_RESULTS", "100"))
-EXPORT_DIR = os.getenv("EXPORT_DIR", "./data/exports")
-
-if not BOT_TOKEN:
-    raise ValueError("BOT_TOKEN is not set in .env")
+@dataclass
+class Config:
+    BOT_TOKEN: str = os.getenv("BOT_TOKEN", "")
+    ADMIN_ID: int = int(os.getenv("ADMIN_ID", "0"))
+    MAX_RESULTS: int = int(os.getenv("MAX_RESULTS", "100"))
+    EXPORT_DIR: str = os.getenv("EXPOPTTàãããŸ]KŸ^‹ù»äBÇò€€ôöY»H€€ôöY 
+B

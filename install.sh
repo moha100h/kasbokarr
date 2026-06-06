@@ -1,45 +1,29 @@
 #!/bin/bash
 set -e
-
-echo "==========================================================="
-echo "   Kasbokarr Bot - Installer"
-echo "==========================================================="
-
+echo "[INFO] Updating system..."
 apt-get update -qq && apt-get upgrade -y -qq
-apt-get install -y -qq git curl docker.io docker-compose python3 python3-pip
+apt-get install -y -qq python3 python3-pip git curl ca-certificates docker.io docker-compose
 systemctl enable docker --now 2>/dev/null || true
-echo "[OK] Dependencies installed"
-
+echo "[OK]   Dependencies installed."
+echo "[INFO] Cloning repo..."
 mkdir -p /opt/kasbokarr
 cd /opt/kasbokarr
-
-if [ -d "kasbokarr/.git" ]; then
-    cd kasbokarr && git pull -q
-else
-    rm -rf kasbokarr
-    git clone -q https://github.com/moha100h/kasbokarr.git
-    cd kasbokarr
-fi
-echo "[OK] Repository ready"
-
+rm -rf kasbokarr
+git clone -q https://github.com/moha100h/kasbokarr.git
+cd kasbokarr
 cat > .env <<EOF
 BOT_TOKEN=8691120995:AAFfscB288SugPNRO4-vDbN_kuQ9QW5ZyUI
 ADMIN_ID=277236314
 MAX_RESULTS=100
 EXPORT_DIR=/app/data/exports
 EOF
-echo "[OK] .env created"
-
-mkdir -p data/exports logs
-
-docker-compose down 2>/dev/null || true
-docker-compose build --no-cache
-docker-compose up -d
-
-sleep 5
+echo "[OK]   .env created."
+mkdir -p data/exports
+echo "[INFO] Building bot..."
+docker-compose build --no-cache bot
+docker-compose up -d bot
+echo "[OK]   Bot started."
+sleep 4
 STATUS=$(docker inspect --format='{{.State.Status}}' kasbokarr_bot 2>/dev/null || echo "unknown")
-echo "Bot status: $STATUS"
-echo "Logs: docker-compose -f /opt/kasbokarr/kasbokarr/docker-compose.yml logs -f"
-echo "==========================================================="
-ecN€DOne!"
-echo "==========================================================="
+echo "[INFO] Status: $STATUS"
+echo "=== Done === Logs: docker-compose logs -f bot"
