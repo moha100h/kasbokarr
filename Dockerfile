@@ -4,5 +4,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends gcc && rm -rf /
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
-RUN mkdir -p logs data/exports
+RUN mkdir -p data/exports logs
 CMD ["python", "main.py"]
